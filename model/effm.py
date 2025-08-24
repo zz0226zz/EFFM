@@ -154,9 +154,9 @@ class RFB_modified(nn.Module):
         return x
 
 
-class aggregation(nn.Module):
+class MSFGM(nn.Module):
     def __init__(self, channel):
-        super(aggregation, self).__init__()
+        super(MSFGM, self).__init__()
         self.relu = nn.ReLU(True)
 
         self.upsample = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
@@ -239,9 +239,9 @@ class SAB(nn.Module):
         return self.sigmoid(x)
     
 
-class MSFA(nn.Module):
+class MRFFM(nn.Module):
     def __init__(self, in_channel, out_channel, exp_ratio=1.0):
-        super(MSFA, self).__init__()
+        super(MRFFM, self).__init__()
 
         mid_channel = in_channel * exp_ratio
 
@@ -341,7 +341,7 @@ class Masnet(nn.Module):
         self.cs2 = RFB_modified(128, 32)
         self.cs3 = RFB_modified(320, 32)
 
-        self.agg = aggregation(32)
+        self.agg = MSFGM(32)
 
         self.CA3 = CAB(320)
         self.CA2 = CAB(128)
@@ -349,9 +349,9 @@ class Masnet(nn.Module):
 
         self.SA = SAB()
 
-        self.maf1 = MSFA(in_channel=320, out_channel=320, exp_ratio=2)
-        self.maf2 = MSFA(in_channel=128, out_channel=128, exp_ratio=2)
-        self.maf3 = MSFA(in_channel=64, out_channel=64, exp_ratio=2)
+        self.maf1 = MRFFM(in_channel=320, out_channel=320, exp_ratio=2)
+        self.maf2 = MRFFM(in_channel=128, out_channel=128, exp_ratio=2)
+        self.maf3 = MRFFM(in_channel=64, out_channel=64, exp_ratio=2)
 
         self.down = nn.MaxPool2d(4)
         self.up2 = nn.ConvTranspose2d(320, 128, kernel_size=2, stride=2)
@@ -440,6 +440,7 @@ if __name__ == '__main__':
     model = Masnet()
     y = model(x)
     print(y.shape)
+
 
 
 
