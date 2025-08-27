@@ -322,7 +322,7 @@ class Masnet(nn.Module):
         self.backbone = pvt_v2_bb()
 
         # self.backbone = pvt_v2_b2() 
-        # path = r'E:\Code\renew\pvt_v2_b2.pth'
+        # path = r'../pvt_v2_b2.pth'
         # save_model = torch.load(path)
         # model_dict = self.backbone.state_dict()
         # state_dict = {k: v for k, v in save_model.items() if k in model_dict.keys()}
@@ -440,6 +440,7 @@ if __name__ == '__main__':
     model = Masnet()
     y = model(x)
     print(y.shape)
+
 
 
 
