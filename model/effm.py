@@ -349,17 +349,17 @@ class EFFM(nn.Module):
 
         self.SA = SAB()
 
-        self.maf1 = MRFFM(in_channel=320, out_channel=320, exp_ratio=2)
-        self.maf2 = MRFFM(in_channel=128, out_channel=128, exp_ratio=2)
-        self.maf3 = MRFFM(in_channel=64, out_channel=64, exp_ratio=2)
+        self.mrffm1 = MRFFM(in_channel=320, out_channel=320, exp_ratio=2)
+        self.mrffm2 = MRFFM(in_channel=128, out_channel=128, exp_ratio=2)
+        self.mrffm3 = MRFFM(in_channel=64, out_channel=64, exp_ratio=2)
 
         self.down = nn.MaxPool2d(4)
         self.up2 = nn.ConvTranspose2d(320, 128, kernel_size=2, stride=2)
         self.up1 = nn.ConvTranspose2d(128, 64, kernel_size=2, stride=2)
 
-        self.ag3 = COM(channel=320)
-        self.ag2 = COM(channel=128)
-        self.ag1 = COM(channel=64)
+        self.com3 = COM(channel=320)
+        self.com2 = COM(channel=128)
+        self.com1 = COM(channel=64)
 
 
         self.out_head4 = nn.Conv2d(320, num_classes, 1)
@@ -401,33 +401,33 @@ class EFFM(nn.Module):
         out4 = self.out_head4(out4)
         out4 = F.interpolate(out4, scale_factor=4, mode='bilinear')
 
-        dd3 = self.ag3(o4, all3)
+        dd3 = self.com3(o4, all3)
         dd3 = dd3 + o4
         d3 = self.CA3(dd3) * dd3
         d3 = self.SA(d3) * d3
-        d3 = self.maf1(d3)
+        d3 = self.mrffm1(d3)
 
         out3 = self.out_head3(d3)
         out3 = F.interpolate(out3, scale_factor=16, mode='bilinear')
 
         d2 = self.up2(d3)
-        x2 = self.ag2(d2, all2)
+        x2 = self.com2(d2, all2)
         d2 = d2 + x2
 
         d2 = self.CA2(d2) * d2
         d2 = self.SA(d2) * d2
-        d2 = self.maf2(d2)
+        d2 = self.mrffm2(d2)
 
         out2 = self.out_head2(d2)
         out2 = F.interpolate(out2, scale_factor=8, mode='bilinear')
 
         d1 = self.up1(d2)
-        x1 = self.ag1(d1, all1)
+        x1 = self.com1(d1, all1)
         d1 = d1 + x1
 
         d1 = self.CA1(d1) * d1
         d1 = self.SA(d1) * d1
-        d1 = self.maf3(d1)
+        d1 = self.mrffm3(d1)
 
         out1 = self.out_head1(d1)
         out1 = F.interpolate(out1, scale_factor=4, mode='bilinear')
@@ -440,6 +440,7 @@ if __name__ == '__main__':
     model = EFFM()
     y = model(x)
     print(y.shape)
+
 
 
 
