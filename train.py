@@ -70,5 +70,5 @@ if __name__ == "__main__":
 
     if not os.path.exists(args.checkpoint_path):
         os.makedirs(args.checkpoint_path)
-    net = Masnet(num_classes=args.num_classes).cuda()
+    net = effm(num_classes=args.num_classes).cuda()
     trainer(args, net)
