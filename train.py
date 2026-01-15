@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 from trainer import trainer
-from model.e import Masnet
+from model.e import effm
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--train_path', type=str,
