@@ -14,7 +14,7 @@ from datasets.dataset_acdc import ACDC_dataset
 from utils import test_single_volume_Synapse
 from utils import test_single_volume_AVT
 from utils import test_single_volume_ACDC
-from model.e import Masnet
+from model.e import effm
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--volume_path', type=str,
