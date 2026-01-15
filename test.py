@@ -148,7 +148,7 @@ if __name__ == "__main__":
     args.list_dir = dataset_config[dataset_name]['list_dir']
 
 
-    net = Masnet(num_classes=args.num_classes).cuda()
+    net = effm(num_classes=args.num_classes).cuda()
     net.load_state_dict(torch.load(args.checkpoint_path))
 
     log_folder = args.checkpoint_path
